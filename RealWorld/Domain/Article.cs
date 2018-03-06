@@ -19,5 +19,7 @@ namespace RealWorld.Domain
 
         public DateTime CreatedAt { get; internal set; }
         public DateTime UpdatedAt { get; set; }
+
+        public List<ArticleTag> ArticleTags { get; set; }
     }
 }
