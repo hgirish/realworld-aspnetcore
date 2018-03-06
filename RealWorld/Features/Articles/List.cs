@@ -2,9 +2,10 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace RealWorld.Infrastructure.Articles
+namespace RealWorld.Features.Articles
 {
     public class List
     {
@@ -27,5 +28,14 @@ namespace RealWorld.Infrastructure.Articles
       public int? Offset { get; }
       public bool IsFeed { get; set; }
     }
+        public class QueryHandler : IRequestHandler<Query, ArticlesEnvelope>
+        {
+            public Task<ArticlesEnvelope> Handle(Query request, CancellationToken cancellationToken)
+            {
+                //ArticlesEnvelope envelope = new ArticlesEnvelope();
+                ArticlesEnvelope result = new ArticlesEnvelope();
+                return Task.FromResult(result);
+            }
+        }
     }
 }

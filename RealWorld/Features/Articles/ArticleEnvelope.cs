@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RealWorld.Infrastructure.Articles
+namespace RealWorld.Features.Articles
 {
   public class ArticleEnvelope
     {

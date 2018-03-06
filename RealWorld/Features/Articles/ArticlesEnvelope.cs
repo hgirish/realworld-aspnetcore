@@ -1,7 +1,7 @@
 using RealWorld.Domain;
 using System.Collections.Generic;
 
-namespace RealWorld.Infrastructure.Articles
+namespace RealWorld.Features.Articles
 {
   public class ArticlesEnvelope
   {
