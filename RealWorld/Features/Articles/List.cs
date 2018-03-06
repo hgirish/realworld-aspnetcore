@@ -1,4 +1,7 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using RealWorld.Domain;
+using RealWorld.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +33,29 @@ namespace RealWorld.Features.Articles
     }
         public class QueryHandler : IRequestHandler<Query, ArticlesEnvelope>
         {
-            public Task<ArticlesEnvelope> Handle(Query request, CancellationToken cancellationToken)
+            private readonly AppDbContext _context;
+
+            public QueryHandler(AppDbContext context)
             {
-                //ArticlesEnvelope envelope = new ArticlesEnvelope();
-                ArticlesEnvelope result = new ArticlesEnvelope();
-                return Task.FromResult(result);
+                _context = context;
+            }
+            public async Task<ArticlesEnvelope> Handle(Query message, CancellationToken cancellationToken)
+            {
+                IQueryable<Article> queryable = _context.Articles.GetAllData();
+
+                var articles = await queryable
+                    .OrderByDescending(x => x.CreatedAt)
+                    .Skip(message.Offset ?? 0)
+                    .Take(message.Limit ?? 20)
+                    .AsNoTracking()
+                    .ToListAsync(cancellationToken);
+
+                return new ArticlesEnvelope
+                {
+                    Articles = articles
+                };
+                    
+
             }
         }
     }
