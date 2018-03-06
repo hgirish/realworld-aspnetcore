@@ -22,5 +22,11 @@ namespace RealWorld.Features.Articles
     {
       return await _mediator.Send(new List.Query(tag, author, favorited, limit, offset));
     }
+
+        [HttpPost]
+        public async Task<ArticleEnvelope> Create([FromBody]Create.Command command)
+        {
+            return await _mediator.Send(command);
+        }
   }
 }
