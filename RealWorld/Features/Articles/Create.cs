@@ -38,6 +38,23 @@ namespace RealWorld.Features.Articles
 
             public async Task<ArticleEnvelope> Handle(Command message, CancellationToken cancellationToken)
             {
+                var tags = new List<Tag>();
+
+                foreach (var tag in message.Article.TagList ?? Enumerable.Empty<string>())
+                {
+                    var t = await _context.Tags.FindAsync(tag);
+
+                    if (t == null)
+                    {
+                        t = new Tag
+                        {
+                            TagId = tag
+                        };
+                        await _context.Tags.AddAsync(t, cancellationToken);
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                    tags.Add(t);
+                }
                 var article = new Article
                 {
                     Body = message.Article.Body,
@@ -49,6 +66,12 @@ namespace RealWorld.Features.Articles
                 };
 
                 await _context.Articles.AddAsync(article, cancellationToken);
+
+                await _context.ArticleTags.AddRangeAsync(tags.Select(x => new ArticleTag()
+                {
+                    Article = article,
+                    Tag = x
+                }), cancellationToken);
 
                 await _context.SaveChangesAsync(cancellationToken);
                 return new ArticleEnvelope(article);

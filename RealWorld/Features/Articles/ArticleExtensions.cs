@@ -12,6 +12,7 @@ namespace RealWorld.Features.Articles
         public static IQueryable<Article> GetAllData(this DbSet<Article> articles)
         {
             return articles
+                .Include(x=>x.ArticleTags)
                 .AsNoTracking();
         }
     }
