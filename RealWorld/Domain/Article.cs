@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +23,6 @@ namespace RealWorld.Domain
         public DateTime UpdatedAt { get; set; }
         [JsonIgnore]
         public List<ArticleTag> ArticleTags { get; set; }
-    }
+    public Person Author { get;  set; }
+  }
 }
