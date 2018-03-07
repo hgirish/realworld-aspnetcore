@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,10 +22,16 @@ namespace RealWorld
         {
             services.AddMediatR();
 
+      services.AddTransient(typeof(IPipelineBehavior<,>),typeof(ValidationPipelineBehavior<,>));
+
             services.AddEntityFrameworkSqlite()
                 .AddDbContext<AppDbContext>();
 
-            services.AddMvc();
+            services.AddMvc(opt=>
+            {
+              // todo 
+            }
+              ).AddFluentValidation(cfg=> { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

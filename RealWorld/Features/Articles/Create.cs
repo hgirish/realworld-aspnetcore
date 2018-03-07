@@ -1,4 +1,5 @@
-﻿using MediatR;
+using FluentValidation;
+using MediatR;
 using RealWorld.Domain;
 using RealWorld.Infrastructure;
 using System;
@@ -22,10 +23,27 @@ namespace RealWorld.Features.Articles
             public string[] TagList { get; set; }
         }
 
+    public class ArticleDataValidator: AbstractValidator<ArticleData>
+    {
+      public ArticleDataValidator()
+      {
+        RuleFor(x => x.Title).NotNull().NotEmpty();
+        RuleFor(x => x.Description).NotNull().NotEmpty();
+        RuleFor(x => x.Body).NotNull().NotEmpty();
+      }
+    }
+
         public class Command : IRequest<ArticleEnvelope>
         {
             public ArticleData Article { get; set; }
         }
+    public class CommandValidator: AbstractValidator<Command>
+    {
+      public CommandValidator()
+      {
+        RuleFor(x => x.Article).NotNull().SetValidator(new ArticleDataValidator());
+      }
+    }
 
         public class Handler: IRequestHandler<Command, ArticleEnvelope>
         {
@@ -40,7 +58,7 @@ namespace RealWorld.Features.Articles
             {
                 var tags = new List<Tag>();
 
-                foreach (var tag in message.Article.TagList ?? Enumerable.Empty<string>())
+                foreach (var tag in message.Article?.TagList ?? Enumerable.Empty<string>())
                 {
                     var t = await _context.Tags.FindAsync(tag);
 
