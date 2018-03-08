@@ -37,9 +37,12 @@ namespace RealWorld
 
             services.AddAutoMapper(GetType().Assembly);
 
+            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddJwt();
 
     }
 

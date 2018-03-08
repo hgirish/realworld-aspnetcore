@@ -1,5 +1,7 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RealWorld.Infrastructure.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,7 @@ namespace RealWorld.Features.Articles
     }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes =JwtIssuerOptions.Schemes)]
         public async Task<ArticleEnvelope> Create([FromBody]Create.Command command)
         {
             return await _mediator.Send(command);
