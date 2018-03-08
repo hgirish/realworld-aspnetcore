@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using RealWorld.Infrastructure;
+using RealWorld.Infrastructure.Security;
 
 namespace RealWorld
 {
@@ -33,7 +35,10 @@ namespace RealWorld
             }
               ).AddFluentValidation(cfg=> { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
 
-      services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
+            services.AddAutoMapper(GetType().Assembly);
+
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
     }

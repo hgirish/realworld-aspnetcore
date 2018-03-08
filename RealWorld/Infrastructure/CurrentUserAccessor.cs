@@ -17,13 +17,9 @@ namespace RealWorld.Infrastructure
     }
     public string GetCurrentUsername()
     {
-      string useName = _httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x=>x.Type == ClaimTypes.NameIdentifier)?.Value;
+      return  _httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x=>x.Type == ClaimTypes.NameIdentifier)?.Value;
 
-      if (string.IsNullOrEmpty(useName))
-      {
-        useName = "anonymous";
-      }
-      return useName;
+   
     }
   }
 }

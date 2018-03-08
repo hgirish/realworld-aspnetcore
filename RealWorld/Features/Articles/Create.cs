@@ -59,7 +59,7 @@ namespace RealWorld.Features.Articles
 
       public async Task<ArticleEnvelope> Handle(Command message, CancellationToken cancellationToken)
       {
-        var author = await _context.Persons.FirstAsync(x => x.Username == _currentUserAccessor.GetCurrentUsername(), cancellationToken);
+        var author = await _context.Persons.FirstOrDefaultAsync(x => x.Username == _currentUserAccessor.GetCurrentUsername(), cancellationToken);
         var tags = new List<Tag>();
 
         foreach (var tag in message.Article?.TagList ?? Enumerable.Empty<string>())
