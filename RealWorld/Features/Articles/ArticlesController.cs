@@ -20,16 +20,30 @@ namespace RealWorld.Features.Articles
     }
 
     [HttpGet]
-    public async Task<ArticlesEnvelope> Get([FromQuery] string tag,[FromQuery] string author, [FromQuery] string favorited, [FromQuery] int? limit,[FromQuery] int? offset)
+    public async Task<ArticlesEnvelope> Get([FromQuery] string tag, [FromQuery] string author, [FromQuery] string favorited, [FromQuery] int? limit, [FromQuery] int? offset)
     {
       return await _mediator.Send(new List.Query(tag, author, favorited, limit, offset));
     }
 
-        [HttpPost]
-        [Authorize(AuthenticationSchemes =JwtIssuerOptions.Schemes)]
-        public async Task<ArticleEnvelope> Create([FromBody]Create.Command command)
-        {
-            return await _mediator.Send(command);
-        }
+    [HttpPost]
+    [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+    public async Task<ArticleEnvelope> Create([FromBody]Create.Command command)
+    {
+      return await _mediator.Send(command);
+    }
+
+    [HttpGet("{slug}")]
+    public async Task<ArticleEnvelope> Get(string slug)
+    {
+      return await _mediator.Send(new Details.Query(slug));
+    }
+
+    [HttpPut("{slug}")]
+    [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+    public async Task<ArticleEnvelope> Edit(string slug, [FromBody]Edit.Command command)
+    {
+      command.Slug = slug;
+      return await _mediator.Send(command);
+    }
   }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RealWorld.Domain;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace RealWorld.Features.Articles
         public static IQueryable<Article> GetAllData(this DbSet<Article> articles)
         {
             return articles
+        .Include(x=>x.Author)
                 .Include(x=>x.ArticleTags)
                 .AsNoTracking();
         }

@@ -34,11 +34,13 @@ namespace RealWorld.Features.Articles
         public class QueryHandler : IRequestHandler<Query, ArticlesEnvelope>
         {
             private readonly AppDbContext _context;
+      private readonly ICurrentUserAccessor _currentUserAccessor;
 
-            public QueryHandler(AppDbContext context)
+      public QueryHandler(AppDbContext context, ICurrentUserAccessor currentUserAccessor)
             {
                 _context = context;
-            }
+        _currentUserAccessor = currentUserAccessor;
+      }
             public async Task<ArticlesEnvelope> Handle(Query message, CancellationToken cancellationToken)
             {
                 IQueryable<Article> queryable = _context.Articles.GetAllData();
