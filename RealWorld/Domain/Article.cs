@@ -24,5 +24,7 @@ namespace RealWorld.Domain
         [JsonIgnore]
         public List<ArticleTag> ArticleTags { get; set; }
     public Person Author { get;  set; }
-  }
+        [JsonIgnore]
+        public List<ArticleFavorite> ArticleFavorites { get; set; }
+    }
 }

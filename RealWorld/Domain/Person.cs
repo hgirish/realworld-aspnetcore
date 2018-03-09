@@ -1,12 +1,9 @@
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RealWorld.Domain
 {
-  public class Person
+    public class Person
   {
     [JsonIgnore]
     public int PersonId { get; set; }
@@ -23,5 +20,15 @@ namespace RealWorld.Domain
 
     [JsonIgnore]
     public byte[] Salt { get; set; }
-  }
+
+        [JsonIgnore]
+        public List<FollowedPeople> Following { get; set; }
+
+        [JsonIgnore]
+        public List<FollowedPeople> Followers { get; set; }
+
+        [JsonIgnore]
+        public List<ArticleFavorite> ArticleFavorites { get; set; }
+
+    }
 }

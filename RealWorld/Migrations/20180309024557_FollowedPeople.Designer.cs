@@ -11,9 +11,10 @@ using System;
 namespace RealWorld.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180309024557_FollowedPeople")]
+    partial class FollowedPeople
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,19 +46,6 @@ namespace RealWorld.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("RealWorld.Domain.ArticleFavorite", b =>
-                {
-                    b.Property<int>("ArticleId");
-
-                    b.Property<int>("PersonId");
-
-                    b.HasKey("ArticleId", "PersonId");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("ArticleFavorites");
-                });
-
             modelBuilder.Entity("RealWorld.Domain.ArticleTag", b =>
                 {
                     b.Property<int>("ArticleId");
@@ -69,19 +57,6 @@ namespace RealWorld.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("ArticleTags");
-                });
-
-            modelBuilder.Entity("RealWorld.Domain.FollowedPeople", b =>
-                {
-                    b.Property<int>("ObserverId");
-
-                    b.Property<int>("TargetId");
-
-                    b.HasKey("ObserverId", "TargetId");
-
-                    b.HasIndex("TargetId");
-
-                    b.ToTable("FollowedPeople");
                 });
 
             modelBuilder.Entity("RealWorld.Domain.Person", b =>
@@ -123,19 +98,6 @@ namespace RealWorld.Migrations
                         .HasForeignKey("AuthorPersonId");
                 });
 
-            modelBuilder.Entity("RealWorld.Domain.ArticleFavorite", b =>
-                {
-                    b.HasOne("RealWorld.Domain.Article", "Article")
-                        .WithMany("ArticleFavorites")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RealWorld.Domain.Person", "Person")
-                        .WithMany("ArticleFavorites")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("RealWorld.Domain.ArticleTag", b =>
                 {
                     b.HasOne("RealWorld.Domain.Article", "Article")
@@ -146,19 +108,6 @@ namespace RealWorld.Migrations
                     b.HasOne("RealWorld.Domain.Tag", "Tag")
                         .WithMany("ArticleTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RealWorld.Domain.FollowedPeople", b =>
-                {
-                    b.HasOne("RealWorld.Domain.Person", "Observer")
-                        .WithMany("Followers")
-                        .HasForeignKey("ObserverId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RealWorld.Domain.Person", "Target")
-                        .WithMany("Following")
-                        .HasForeignKey("TargetId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
