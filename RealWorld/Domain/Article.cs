@@ -26,5 +26,7 @@ namespace RealWorld.Domain
     public Person Author { get;  set; }
         [JsonIgnore]
         public List<ArticleFavorite> ArticleFavorites { get; set; }
+        public List<Comment> Comments { get; set; }
+
     }
 }
