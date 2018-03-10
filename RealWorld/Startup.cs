@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using RealWorld.Features.Profiles;
 using RealWorld.Infrastructure;
+using RealWorld.Infrastructure.Errors;
 using RealWorld.Infrastructure.Security;
 
 namespace RealWorld
@@ -40,6 +42,7 @@ namespace RealWorld
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
+            services.AddScoped<IProfileReader, ProfileReader>();
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddJwt();
@@ -49,6 +52,8 @@ namespace RealWorld
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
