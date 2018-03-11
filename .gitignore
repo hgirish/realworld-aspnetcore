@@ -260,3 +260,7 @@ paket-files/
 __pycache__/
 *.pyc
 RealWorld/realworld.db
+Coverage/**
+coverage.xml
+RealWorld.IntegrationTests/results.xml
+report/**
