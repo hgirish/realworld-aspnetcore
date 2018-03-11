@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RealWorld.Features.Users;
+using RealWorld.Infrastructure.Errors;
 using RealWorld.Infrastructure.Security;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,6 +29,39 @@ namespace RealWorld.IntegrationTests.Featrues.Users
                 d => d.Email == command.User.Email).SingleOrDefaultAsync());
             Assert.NotNull(created);
             Assert.Equal(created.Hash, new PasswordHasher().Hash("password", created.Salt));
+        }
+
+        [Theory]
+        [InlineData("email@example.com","password","username","email@example.com","username2")]
+        [InlineData("email@example.com", "password", "username", "email2@example.com", "username")]
+        public async Task  Existing_username_create_throws_exception(
+            string email, string password, string username,string email2,string username2)
+        {
+            var command = new Create.Command
+            {
+                User = new Create.UserData
+                {
+                    Email = email,
+                    Password = password,
+                    Username = username
+                }
+            };
+
+            await SendAsync(command);
+
+            // Try to create same user again  with same username
+            command = new Create.Command
+            {
+                User = new Create.UserData
+                {
+                    Email = email2,
+                    Password = "password",
+                    Username = username2
+                }
+            };
+            var ex = await Assert.ThrowsAsync<RestException>(async () =>
+                await SendAsync(command));
+            Assert.Equal(System.Net.HttpStatusCode.BadRequest, ex.Code);
         }
         [Fact]
         public async Task Invalid_email_throws_Exception()

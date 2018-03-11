@@ -47,12 +47,14 @@ namespace RealWorld.IntegrationTests.Featrues.Users
 
         }
 
-        [Fact]
-        public async Task  Expect_RestException_On_Invalid_Credentials()
+        [Theory]
+        [InlineData("email@example.com","password","email@example.com","wrongpassword")]
+        [InlineData("email@example.com", "password", "wrongemail@example.com", "password")]
+        public async Task  Expect_RestException_On_Invalid_Credentials(
+            string email,string password, string loginEmail, string loginPassword)
         {
             var salt = Guid.NewGuid().ToByteArray();
-            const string password = "password";
-            const string email = "email@example.com";
+           
             const string username = "username";
             var person = new Person
             {
@@ -68,8 +70,8 @@ namespace RealWorld.IntegrationTests.Featrues.Users
             {
                 User = new Login.UserData
                 {
-                    Email = email,
-                    Password = "wrong"
+                    Email = loginEmail,
+                    Password = loginPassword
                 }
             };
 

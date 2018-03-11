@@ -12,7 +12,7 @@ namespace RealWorld.Infrastructure.Security
 
         public string Issuer { get; set; }
 
-        public string Subject { get; set; }
+        //public string Subject { get; set; }
 
         public string Audience { get; set; }
 
